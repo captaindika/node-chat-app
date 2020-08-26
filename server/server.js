@@ -14,6 +14,21 @@ app.use(express.static(publicPath))
 
 socket.on('connection', (socket) => {
   console.log('New user connected')
+
+  socket.emit('newEmail', {
+    from: 'mamat@manja.com',
+    text: 'Halo mamat manja',
+    createdAt: Date()
+  })
+
+  socket.on('createEmail', (newEmail) => {
+    console.log(`new Email :${JSON.stringify (newEmail)}`)
+  })
+
+  socket.on('sendMessage', (message) => {
+    console.log(`new message: ${JSON.stringify(message)}`)
+  })
+
   socket.on('disconnect', () => {
     console.log('User was disconnected')
   })
