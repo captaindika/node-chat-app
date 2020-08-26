@@ -12,7 +12,7 @@ var socket = io(server)
 
 app.use(express.static(publicPath))
 
-io.on('connection', (socket) => {
+socket.on('connection', (socket) => {
   console.log('New user connected')
 })
 
