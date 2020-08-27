@@ -2,7 +2,8 @@ const path = require('path')
 const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
-const { create } = require('domain')
+const {generateMessage} = require('./utils/message')
+// const { create } = require('domain')
 const publicPath = path.join(__dirname,'../public')
 const port = process.env.PORT || 5000
 
@@ -23,19 +24,11 @@ io.on('connection', (socket) => {
     })
 
     // socket broadcast emit from admin to new user joined
-    socket.broadcast.emit('welcome', {
-      from: 'Admin',
-      text:'new user joined',
-      createdAt: `new user joined at ${new Date().getTime()}`
-    })
+    socket.broadcast.emit('welcome', generateMessage('Admin', 'New User joined'))
 
   socket.on('createMessage', (message) => {
     console.log(`createMessage: ${JSON.stringify(message)}`);
-    io.emit('send', {
-      from: message.from,
-      body: message.body,
-      createdAt: new Date().getTime()
-    })
+    io.emit('send', generateMessage(message.from, message.text))
   })
 
   socket.on('disconnect', () => {
