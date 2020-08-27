@@ -22,18 +22,20 @@ io.on('connection', (socket) => {
       from: 'Admin',
       body: 'welcome to the server'
     })
-
+    
     // socket broadcast emit from admin to new user joined
     socket.broadcast.emit('welcome', generateMessage('Admin', 'New User joined'))
+    socket.broadcast.emit('send', generateMessage('Server', 'new user joined'))
+    socket.emit('send', generateMessage('Server', 'Welcome to chat app'))
+    socket.on('createMessage', (message, callback) => {
+      console.log(`createMessage: ${JSON.stringify(message)}`)
+      io.emit('send', generateMessage(message.from, message.text))
+      callback('this is from server')
+    })
 
-  socket.on('createMessage', (message) => {
-    console.log(`createMessage: ${JSON.stringify(message)}`);
-    io.emit('send', generateMessage(message.from, message.text))
-  })
-
-  socket.on('disconnect', () => {
-    console.log('User was disconnected')
-  })
+    socket.on('disconnect', () => {
+      console.log('User was disconnected')
+    })
 }) 
 server.listen(port, () => {
   console.log(`server run on port ${port}`)
