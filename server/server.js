@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log('User was disconnected')
+      socket.broadcast.emit('send', generateMessage('Server', 'User disconnected'))
     })
 }) 
 server.listen(port, () => {
