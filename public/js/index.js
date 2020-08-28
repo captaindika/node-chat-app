@@ -42,6 +42,7 @@ var socket = io();
       console.log('location', coords)
       var link = jQuery(`<a href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}">My Location</a>`)
       var li = jQuery('<li>',{link},'</li>')
+      li.text(`${coords.from}: `)
       jQuery('#messages').append(li.append(link))
     })
 
