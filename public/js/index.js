@@ -41,7 +41,7 @@ var socket = io();
     socket.on('sendLocation', (coords) => {
       console.log('location', coords)
       // var link = jQuery(`<a href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}></a>`)
-      var link = jQuery('<a href="www.mainbasket.com"></a>')
+      var link = jQuery('<a href="http://www.mainbasket.com"></a>')
       link.text('My Location')
       jQuery('#messages').append(link)
       // var li = jQuery(`<li></li>`)
