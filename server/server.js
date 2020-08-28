@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
   })
     
     // socket broadcast emit from admin to new user joined
-    socket.broadcast.emit('send', generateMessage('Server', 'New user joined'))
+    socket.broadcast.emit('send', generateMessage('Server', 'New user joined', 'red'))
 
     socket.on('createMessage', (message, callback) => {
       console.log(`createMessage: ${JSON.stringify(message)}`)
@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log('User was disconnected')
-      socket.broadcast.emit('send', generateMessage('Server', 'User disconnected'))
+      socket.broadcast.emit('send', generateMessage('Server', 'User disconnected', 'red'))
     })
 }) 
 server.listen(port, () => {

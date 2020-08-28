@@ -31,7 +31,7 @@ var socket = io();
     
     socket.on('send', (message) => {
       console.log('send: ',message)
-      var li = jQuery('<li></li>')
+      var li = jQuery(`<li style="color: ${message.color};"></li>`)
       li.text(`${message.from}: ${message.text}`)
 
       jQuery('#messages').append(li)
