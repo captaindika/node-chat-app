@@ -31,7 +31,8 @@ var socket = io();
     
     socket.on('send', (message) => {
       console.log('send: ',message)
-      var li = jQuery(`<li style="color: ${message.color};"></li>`)
+      var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
+      jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
       li.text(`${message.from}: ${message.text}`)
 
       jQuery('#messages').append(li)
