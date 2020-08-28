@@ -7,6 +7,15 @@ var generateMessage = (from, text, color) => {
  }
 }
 
+var generateMessageLocation = (from, position) => {
+  return {
+    from,
+    latitude: position.latitude,
+    longitude: position.longitude
+  }
+}
+
 module.exports = {
-  generateMessage
+  generateMessage,
+  generateMessageLocation
 }

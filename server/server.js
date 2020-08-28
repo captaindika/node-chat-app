@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
-const {generateMessage} = require('./utils/message')
+const {generateMessage, generateMessageLocation} = require('./utils/message')
 // const { create } = require('domain')
 const publicPath = path.join(__dirname,'../public')
 const port = process.env.PORT || 5000
@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
   // socket emit from admin text welcome to the chat app
   socket.emit('welcome', {
     from: 'Admin',
-    text: 'Welcome to Gabut Chat'
+    text: 'Cieeeee gabut nih !!!'
   })
     
     // socket broadcast emit from admin to new user joined
@@ -30,6 +30,10 @@ io.on('connection', (socket) => {
       console.log(`createMessage: ${JSON.stringify(message)}`)
       io.emit('send', generateMessage(message.from, message.text))
       callback('this is from server')
+    })
+
+    socket.on('location', (coords) => {
+      io.emit('sendLocation', generateMessageLocation('User', coords))
     })
 
     socket.on('disconnect', () => {

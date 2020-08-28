@@ -38,6 +38,24 @@ var socket = io();
       jQuery('#messages').append(li)
     })
 
+    socket.on('sendLocation', (coords) => {
+      console.log('location', coords)
+      // var link = jQuery(`<a href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}></a>`)
+      var link = jQuery('<a href="www.mainbasket.com"></a>')
+      link.text('My Location')
+      jQuery('#messages').append(link)
+      // var li = jQuery(`<li></li>`)
+      // li.text(`${coords.from}: asdasd`)
+      // jQuery('#messages').append(
+      //   `<li>
+      //     ${coords.from} : <a href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}>My Location</a>
+      //   </li>`)
+    })
+
+    // socket.on('sendLocation', (coords) => {
+    //   console.log('location: ',coords)
+    // })
+
     jQuery('#message-form').on('submit', (e) => {
       e.preventDefault()
 
@@ -47,4 +65,24 @@ var socket = io();
       }, () => {
 
       })
+    })
+
+    var locationButton = jQuery('#send-location')
+    locationButton.on('click', () => {
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition( (position) => {
+          socket.emit('location', {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude
+          })
+          console.log(`here is your position: \n
+          longitude: ${position.coords.longitude}\n
+          latitude: ${position.coords.latitude}`)
+        }, () => {
+          alert('Unable fetch your location, permission needed !')
+        })
+      } 
+      else{
+        return alert('It doesnt work')
+      } 
     })
