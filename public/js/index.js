@@ -21,6 +21,13 @@ var socket = io();
     // }, (message) => {
     //   console.log('it works, ',message)
     // })
+
+    socket.on('welcome', (message) => {
+      console.log('ini welcome : ',message)
+      var h3 = jQuery('<h3></h3>')
+      h3.text(`${message.text}`)
+      jQuery('#welcoming').append(h3)
+    })
     
     socket.on('send', (message) => {
       console.log('send: ',message)

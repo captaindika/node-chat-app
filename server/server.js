@@ -18,15 +18,14 @@ io.on('connection', (socket) => {
   console.log('New user connected')
  
   // socket emit from admin text welcome to the chat app
-    socket.emit('welcome', {
-      from: 'Admin',
-      body: 'welcome to the server'
-    })
+  socket.emit('welcome', {
+    from: 'Admin',
+    text: 'Welcome to Gabut Chat'
+  })
     
     // socket broadcast emit from admin to new user joined
-    socket.broadcast.emit('welcome', generateMessage('Admin', 'New User joined'))
-    socket.broadcast.emit('send', generateMessage('Server', 'new user joined'))
-    socket.emit('send', generateMessage('Server', 'Welcome to chat app'))
+    socket.broadcast.emit('send', generateMessage('Server', 'New user joined'))
+
     socket.on('createMessage', (message, callback) => {
       console.log(`createMessage: ${JSON.stringify(message)}`)
       io.emit('send', generateMessage(message.from, message.text))
