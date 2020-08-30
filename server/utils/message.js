@@ -2,7 +2,8 @@ var moment = require('moment')
 moment.locale('id')
 var generateMessage = (from, text, color) => {
   var date = new Date()
-  var convertDate = moment(date).format('dddd, h:mm:ss a')
+  // convert time to GMT +7
+  var convertDate = moment(date).add(7,'h').format('dddd, h:mm:ss a')
  return {
     from,
     text,
