@@ -1,4 +1,4 @@
-Open The app : https://dry-eyrie-33379.herokuapp.com/
+Open The app : https://gabut-chat.herokuapp.com/
 
 Prerequisite :
   * Create account on Heroku
