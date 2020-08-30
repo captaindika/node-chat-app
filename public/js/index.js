@@ -1,3 +1,5 @@
+// const message = require("../../server/utils/message");
+
 var socket = io();
     socket.on('connect', () => {
       console.log('connected to server')
@@ -24,9 +26,20 @@ var socket = io();
 
     socket.on('welcome', (message) => {
       console.log('ini welcome : ',message)
-      var h3 = jQuery('<h3></h3>')
-      h3.text(`${message.text}`)
-      jQuery('#welcoming').append(h3)
+      const style = `font-family: Comic Sans MS,
+                    cursive, sans-serif;
+                    font-size: 24px;
+                    letter-spacing: -3px;
+                    word-spacing: 4px; 
+                    color: #5EC9DB;
+                    font-weight: normal;
+                    text-decoration: none;
+                    font-style: italic;
+                    font-variant: small-caps;
+                    text-transform: capitalize;`
+      var title = jQuery(`<li style=\"${style}\"></li>`)
+      title.text(`${message.from} : ${message.text}`)
+      jQuery('#messages').append(title)
     })
     
     socket.on('send', (message) => {
@@ -48,27 +61,32 @@ var socket = io();
 
     jQuery('#message-form').on('submit', (e) => {
       e.preventDefault()
-
+      var messageTextbox = jQuery('[name=message]')
       socket.emit('createMessage', {
         from: 'User',
-        text: jQuery('[name=message]').val()
+        text: messageTextbox.val()
       }, () => {
-
+        messageTextbox.val('')
       })
     })
 
     var locationButton = jQuery('#send-location')
     locationButton.on('click', () => {
       if(navigator.geolocation) {
+        locationButton.attr('disabled', 'disabled').text('Sending Location')
         navigator.geolocation.getCurrentPosition( (position) => {
-          socket.emit('location', {
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude
-          })
+          setTimeout( () => {
+            locationButton.removeAttr('disabled').text('Share Location')
+            socket.emit('location', {
+              longitude: position.coords.longitude,
+              latitude: position.coords.latitude
+            })
+          }, 3000)
           console.log(`here is your position: \n
           longitude: ${position.coords.longitude}\n
           latitude: ${position.coords.latitude}`)
         }, () => {
+          locationButton.removeAttr('disabled')
           alert('Unable fetch your location, permission needed !')
         })
       } 

@@ -19,8 +19,8 @@ io.on('connection', (socket) => {
  
   // socket emit from admin text welcome to the chat app
   socket.emit('welcome', {
-    from: 'Admin',
-    text: 'Cieeeee gabut nih !!!'
+    from: 'Server',
+    text: 'Welcome to the gabut chat !!!'
   })
     
     // socket broadcast emit from admin to new user joined
@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     socket.on('createMessage', (message, callback) => {
       console.log(`createMessage: ${JSON.stringify(message)}`)
       io.emit('send', generateMessage(message.from, message.text))
-      callback('this is from server')
+      callback()
     })
 
     socket.on('location', (coords) => {
