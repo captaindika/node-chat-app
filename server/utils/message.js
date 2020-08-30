@@ -1,9 +1,13 @@
+var moment = require('moment')
+moment.locale('id')
 var generateMessage = (from, text, color) => {
+  var date = new Date()
+  var convertDate = moment(date).format('dddd MMMM YYYY, h:mm:ss a')
  return {
     from,
     text,
     color: color || 'black',
-    createdAt: new Date().getTime()
+    createdAt: convertDate
  }
 }
 

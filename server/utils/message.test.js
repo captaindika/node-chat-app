@@ -1,14 +1,18 @@
 var expect = require('expect')
+var moment = require('moment')
+var date = moment()
 var {generateMessage, generateMessageLocation} = require('./message')
 describe('function generate message', () => {
   it('should return from, text, and createdAt', () => {
     var from = 'Jen'
     var text = 'Some message'
-    var message = generateMessage(from, text)
-    expect(typeof message.createdAt).toBe('number')
+    var timestamp = date.format('dddd MMMM YYYY')
+    var message = generateMessage(from, text, 'black', timestamp)
+    expect(typeof message.timestamp).toBe('string')
     expect(message).toMatchObject({
       from,
-      text
+      text,
+      timestamp
     })
   })
 })

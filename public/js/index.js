@@ -46,9 +46,10 @@ var socket = io();
       console.log('send: ',message)
       var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
       jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
+      var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
+      a.text(`<${message.createdAt}>`)
       li.text(`${message.from}: ${message.text}`)
-
-      jQuery('#messages').append(li)
+      jQuery('#messages').append(li.append(a))
     })
 
     socket.on('sendLocation', (coords) => {
@@ -64,7 +65,7 @@ var socket = io();
       var messageTextbox = jQuery('[name=message]')
       socket.emit('createMessage', {
         from: 'User',
-        text: messageTextbox.val()
+        text: messageTextbox.val(),
       }, () => {
         messageTextbox.val('')
       })
@@ -80,7 +81,7 @@ var socket = io();
             socket.emit('location', {
               longitude: position.coords.longitude,
               latitude: position.coords.latitude
-            })
+            }) 
           }, 3000)
           console.log(`here is your position: \n
           longitude: ${position.coords.longitude}\n
