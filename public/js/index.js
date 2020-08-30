@@ -47,7 +47,7 @@ var socket = io();
       var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
       jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
       var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
-      a.text(`<${message.createdAt}>`)
+      a.text(`<server time - ${message.createdAt}>`)
       li.text(`${message.from}: ${message.text}`)
       jQuery('#messages').append(li.append(a))
     })
