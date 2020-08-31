@@ -43,13 +43,37 @@ var socket = io();
     })
     
     socket.on('send', (message) => {
-      console.log('send: ',message)
-      var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
-      jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
-      var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
-      a.text(`<server time - ${message.createdAt}>`)
-      li.text(`${message.from}: ${message.text}`)
-      jQuery('#messages').append(li.append(a))
+      if (message.text) {
+        console.log('send: ',message)
+        var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
+        jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
+        var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
+        a.text(`<server time - ${message.createdAt}>`)
+        li.text(`${message.from}: ${message.text}`)
+        jQuery('#messages').append(li.append(a))
+      } else {
+        var sendButton = jQuery('[name=sendButton]')
+        var messageBox = jQuery('[name=message]')
+        messageBox.attr('disabled', 'disabled')
+        sendButton.attr('disabled', 'disabled').text('Cant send')
+        var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
+        li.text('Message cant be empty !!!, wait 10 second for sending new message')
+        jQuery('#messages').append(li)
+        setTimeout( () => {
+          sendButton.removeAttr('disabled').text('Send')
+          messageBox.removeAttr('disabled')              
+        }, 10000)
+      }
+
+      // var time = moment.locale('id')(message.createdAt).zone('+07:00').format('h:mm a') 
+      // var template = jQuery('#message-template').html()
+      // var html = Mustache.render(template, {
+      //   from: message.from,
+      //   text: message.text,
+      //   createdAt: time
+      // })
+      // jQuery('#messages').append(html)
+
     })
 
     socket.on('sendLocation', (coords) => {

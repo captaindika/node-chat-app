@@ -20,13 +20,21 @@
     <div class='chat__footer'>
       <form id="message-form">
         <input name='message' type='text' placeholder="Type here..." autofocus autocomplete="off"/>
-        <button>Send</button>
+        <button name='sendButton'>Send</button>
       </form>
       <button id='send-location'>Share Location</button>
     </div>
   </div>
+
+  <script id="message-template" type="text/template">
+    <h1 style="color:blue;">{{from}} - {{createdAt}}</h1>
+    <p>{{text}}</p>
+  </script>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="./js/libs/jquery-3.5.1.min.js"></script>
   <script src="./js/index.js"></script>
+  <script src="./js/libs/mustache.js"></script>
+  <script src="./js/libs//moment.js"></script>
 </body>
 </html>
