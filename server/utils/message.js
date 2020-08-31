@@ -2,8 +2,8 @@ var moment = require('moment')
 moment.locale('id')
 var generateMessage = (from, text, color) => {
   var date = new Date()
-  // convert time to GMT +7 heroku server
-  var convertDate = moment(date).add(7,'h').format('dddd, h:mm:ss a')
+  // convert time to GMT +7 heroku server, comment below for use server time
+  var convertDate = moment(date).add(7,'h').format('dddd, D MMMM YYYY h:mm:ss a')
  return {
     from,
     text,
