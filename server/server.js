@@ -21,12 +21,13 @@ io.on('connection', (socket) => {
     text: 'Welcome to the gabut chat !!!'
   })
     
+  socket.emit('newMessage', generateMessage('Server', 'Welcome to The Gabut Chat', 'black', 'bold'))
     // socket broadcast emit from admin to new user joined
-    socket.broadcast.emit('send', generateMessage('Server', 'New user joined', 'red'))
+    socket.broadcast.emit('newMessage', generateMessage('Server', 'New user joined', 'red', 'bold'))
 
     socket.on('createMessage', (message, callback) => {
       console.log(`createMessage: ${JSON.stringify(message)}`)
-      io.emit('send', generateMessage(message.from, message.text,))
+      io.emit('newMessage', generateMessage(message.from, message.text))
       callback()
     })
 
@@ -36,7 +37,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log('User was disconnected')
-      socket.broadcast.emit('send', generateMessage('Server', 'User disconnected', 'red'))
+      socket.broadcast.emit('newMessage', generateMessage('Server', 'User disconnected', 'red', 'bold'))
     })
 }) 
 server.listen(port, () => {

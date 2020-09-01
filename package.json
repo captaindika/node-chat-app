@@ -7,7 +7,8 @@
     "start": "nodemon server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\"",
-    "test-date": "nodemon playground/date.js"
+    "test-date": "nodemon playground/date.js",
+    "test-xml": "nodemon --ext js playground/try-xml.js"
   },
   "engines": {
     "node": "10.15.3"
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "expect": "^26.4.2",
-    "mocha": "^8.1.2"
+    "mocha": "^8.1.2",
+    "xml2js": "^0.4.23"
   }
 }

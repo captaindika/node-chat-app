@@ -1,0 +1,16 @@
+{
+    "Book": {
+        "author": [
+            "Mamat Manja "
+        ],
+        "genre": [
+            " Komik "
+        ],
+        "price": [
+            " 50000 "
+        ],
+        "quantity": [
+            " < 100000 "
+        ]
+    }
+}
