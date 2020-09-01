@@ -24,6 +24,18 @@ var socket = io();
     //   console.log('it works, ',message)
     // })
 
+    socket.on('newMessage', (message) => {
+      var template = jQuery('#message-template').html()
+      var html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        createdAt: message.createdAt,
+        color: message.color,
+        bold: message.bold || 'normal'
+      })
+      console.log(jQuery('#messages').append(html))  
+    })
+
     socket.on('welcome', (message) => {
       console.log('ini welcome : ',message)
       const style = `font-family: Comic Sans MS,
@@ -45,8 +57,7 @@ var socket = io();
     socket.on('send', (message) => {
       if (message.text) {
         console.log('send: ',message)
-        var li = (message.color.toLowerCase() === 'black' ? jQuery(`<li style="color: ${message.color};"></li>`) : 
-        jQuery(`<li style="color: ${message.color}; font-weight:bold; font-size:20"></li>`))
+        var li = jQuery(`<li style="color: ${message.color};"></li>`)
         var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
         a.text(`<server time - ${message.createdAt}>`)
         li.text(`${message.from}: ${message.text}`)
