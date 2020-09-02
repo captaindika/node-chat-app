@@ -64,14 +64,17 @@ var socket = io();
       } else {
         var sendButton = jQuery('[name=sendButton]')
         var messageBox = jQuery('[name=message]')
+        var locationButton = jQuery('#send-location')
         messageBox.attr('disabled', 'disabled')
         sendButton.attr('disabled', 'disabled').text('Cant send')
+        locationButton.attr('disabled', 'disabled')
         var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
         li.text('Message cant be empty !!!, wait 10 second for sending new message')
         jQuery('#messages').append(li)
         setTimeout( () => {
           sendButton.removeAttr('disabled').text('Send')
-          messageBox.removeAttr('disabled')              
+          messageBox.removeAttr('disabled')
+          locationButton.removeAttr('disabled')              
         }, 10000)
       }
     })
