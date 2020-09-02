@@ -9,7 +9,7 @@ var generateMessage = (from, text, color, bold) => {
     from,
     text,
     color: color || 'black',
-    createdAt: moment().calendar(),
+    createdAt: moment().utcOffset("+07:00").calendar(),
     bold: bold || 'normal'
  }
 }
