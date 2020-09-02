@@ -76,6 +76,7 @@ var socket = io();
           messageBox.removeAttr('disabled')
           locationButton.removeAttr('disabled')              
         }, 10000)
+        scrollToBottom()
       }
     })
 
