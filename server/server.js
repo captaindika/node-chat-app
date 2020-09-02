@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
+const {isRealString} = require('./utils/validation')
 const {generateMessage, generateMessageLocation} = require('./utils/message')
 const { Socket } = require('dgram')
 const publicPath = path.join(__dirname,'../public')
@@ -22,9 +23,16 @@ io.on('connection', (socket) => {
     text: 'Welcome to the gabut chat !!!'
   })
   
-  socket.on('end', () => {
-    socket.close()
-  })
+  socket.on('joinChat', (params, callback) => {
+    // const kondisi = (!isRealString(params.name) || !isRealString(params.room))
+    if ((!isRealString(params.name) || !isRealString(params.room))) {
+    // console.log('ini kondisi: ',kondisi)
+      callback('Name and room must be filled')
+    } else {
+      callback()
+    }
+  }) 
+
   socket.emit('newMessage', generateMessage('Server', 'Welcome to The Gabut Chat', 'black', 'bold'))
     // socket broadcast emit from admin to new user joined
     socket.broadcast.emit('newMessage', generateMessage('Server', 'New user joined', 'red', 'bold'))

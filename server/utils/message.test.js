@@ -2,17 +2,18 @@ var expect = require('expect')
 var moment = require('moment')
 var date = moment()
 var {generateMessage, generateMessageLocation} = require('./message')
+var {isRealString} = require('./validation')
 describe('function generate message', () => {
   it('should return from, text, and createdAt', () => {
     var from = 'Jen'
     var text = 'Some message'
-    var timestamp = date.format('dddd MMMM YYYY')
+    var timestamp = moment().calendar()
     var message = generateMessage(from, text, 'black', timestamp)
-    expect(typeof message.timestamp).toBe('string')
+    expect(typeof message.createdAt).toBe('string')
     expect(message).toMatchObject({
       from,
       text,
-      timestamp
+      createdAt: timestamp,
     })
   })
 })
@@ -34,5 +35,20 @@ describe('function generate message location', () => {
       longitude: position.longitude,
       latitude: position.latitude
     })
+  })
+})
+
+describe('isRealString validation testing', () => {
+  it('should reject non-string values', () => {
+    var testFunction = isRealString(30)
+    expect(testFunction).toBe(false)
+  })
+  it('should reject string with only spaces', () => {
+    var testFunction = isRealString('   ')
+    expect(testFunction).toBe(false)
+  })
+  it('should allow string with non-space characters', () => {
+    var testFunction = isRealString('    a        a')
+    expect(testFunction).toBe(true)
   })
 })

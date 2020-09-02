@@ -18,7 +18,16 @@ var socket = io();
       }
     }
     socket.on('connect', () => {
-      console.log('connected to server')
+      var params = jQuery.deparam(window.location.search)
+      socket.emit('joinChat', params, (err) => {
+        if (err) {
+          alert(err)
+          window.location.href = '/'
+        } else {
+          alert(`Welcome in ${params.room} room, ${params.name} ! \n Enjoy GabutChat !`)
+          console.log('Success')
+        }
+      })
     })
 
     socket.on('disconnect', () => {
