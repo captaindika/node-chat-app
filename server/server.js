@@ -3,6 +3,7 @@ const express = require('express')
 const http = require('http')
 const socketIO = require('socket.io')
 const {generateMessage, generateMessageLocation} = require('./utils/message')
+const { Socket } = require('dgram')
 const publicPath = path.join(__dirname,'../public')
 const port = process.env.PORT || 5000
 
@@ -20,7 +21,10 @@ io.on('connection', (socket) => {
     from: 'Server',
     text: 'Welcome to the gabut chat !!!'
   })
-    
+  
+  socket.on('end', () => {
+    socket.close()
+  })
   socket.emit('newMessage', generateMessage('Server', 'Welcome to The Gabut Chat', 'black', 'bold'))
     // socket broadcast emit from admin to new user joined
     socket.broadcast.emit('newMessage', generateMessage('Server', 'New user joined', 'red', 'bold'))

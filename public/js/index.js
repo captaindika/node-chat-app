@@ -1,12 +1,28 @@
 // const message = require("../../server/utils/message");
 
 var socket = io();
+    const scrollToBottom = () => {
+      // selector
+      var messages = jQuery('#messages')
+      var newMessage = messages.children('li:last-child')
+      //height
+      var clientHeight = messages.prop('clientHeight')
+      var scrollTop = messages.prop('scrollTop')
+      var scrollHeight =messages.prop('scrollHeight')
+      var newMessageHeight = newMessage.innerHeight()
+      var lastMessageHeight = newMessage.prev().innerHeight()
+
+      if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight>= scrollHeight) {
+        messages.scrollTop(scrollHeight)
+      
+      }
+    }
     socket.on('connect', () => {
       console.log('connected to server')
     })
 
     socket.on('disconnect', () => {
-      console.log('disconnected to server')
+      console.log(`you're out`)
     })
 
     socket.on('send', (message) => {
@@ -25,15 +41,30 @@ var socket = io();
     // })
 
     socket.on('newMessage', (message) => {
-      var template = jQuery('#message-template').html()
-      var html = Mustache.render(template, {
-        from: message.from,
-        text: message.text,
-        createdAt: message.createdAt,
-        color: message.color,
-        bold: message.bold || 'normal'
-      })
-      console.log(jQuery('#messages').append(html))  
+      if (message.text) {  
+        var template = jQuery('#message-template').html()
+        var html = Mustache.render(template, {
+          from: message.from,
+          text: message.text, 
+          createdAt: message.createdAt,
+          color: message.color,
+          bold: message.bold || 'normal'
+        })
+        jQuery('#messages').append(html)
+        scrollToBottom()  
+      } else {
+        var sendButton = jQuery('[name=sendButton]')
+        var messageBox = jQuery('[name=message]')
+        messageBox.attr('disabled', 'disabled')
+        sendButton.attr('disabled', 'disabled').text('Cant send')
+        var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
+        li.text('Message cant be empty !!!, wait 10 second for sending new message')
+        jQuery('#messages').append(li)
+        setTimeout( () => {
+          sendButton.removeAttr('disabled').text('Send')
+          messageBox.removeAttr('disabled')              
+        }, 10000)
+      }
     })
 
     socket.on('welcome', (message) => {
@@ -93,17 +124,18 @@ var socket = io();
       var li = jQuery('<li>',{link},'</li>')
       li.text(`${coords.from}: `)
       jQuery('#messages').append(li.append(link))
+      scrollToBottom()
     })
 
     jQuery('#message-form').on('submit', (e) => {
       e.preventDefault()
       var messageTextbox = jQuery('[name=message]')
-      socket.emit('createMessage', {
-        from: 'User',
-        text: messageTextbox.val(),
-      }, () => {
-        messageTextbox.val('')
-      })
+        socket.emit('createMessage', {
+          from: 'User',
+          text: messageTextbox.val(),
+        }, () => {
+          messageTextbox.val('')
+        })
     })
 
     var locationButton = jQuery('#send-location')
