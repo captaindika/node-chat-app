@@ -18,7 +18,8 @@ var generateMessageLocation = (from, position) => {
   return {
     from,
     latitude: position.latitude,
-    longitude: position.longitude
+    longitude: position.longitude,
+    createdAt: moment().utcOffset("+07:00").calendar()
   }
 }
 

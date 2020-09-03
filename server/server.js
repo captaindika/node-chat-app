@@ -30,25 +30,46 @@ io.on('connection', (socket) => {
     socket.join(params.room);
     users.removeUser(socket.id)
     users.addUser(socket.id, params.name, params.room)
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room))
-     
+    io.to(params.room).emit('updateUserList', users.getUserList(params.room))     
     socket.broadcast.to(params.room).emit('newMessage', generateMessage('Server', `${params.name} has joined in room ${params.room}`, 'red', 'bold'))
-      callback()
+
+    //
+    // socket.broadcast.to(params.room).on('createMessage', (message, callback) => {
+    // console.log(`createMessage: ${JSON.stringify(message)}`)
+    // io.emit('newMessage', generateMessage(params.name, message.text))  
+    callback()
     })
 
+    socket.on('createMessage', (message, callback) => {
+      var user = users.getUser(socket.id)
+      if (user && isRealString(message.text)) {
+        io.to(user.room).emit('newMessage', generateMessage(user.name, message.text))
+        callback()
+      } else {
+        io.to(user.id).emit('punishment')
+        callback()
+      }
+    })
+
+    // socket.on('location', (message, callback) => {
+    //   var user = users.getUser(socket.id)
+    //   if (user && isRealString(message.text)) {
+    //     io.to(user.room).emit('newMessage', generateMessage(message.from, message.text))
+    //   } 
+    // })
+
   socket.emit('newMessage', generateMessage('Server', 'Welcome to The Gabut Chat', 'red', 'bold'))
+  // for send to all room
     // socket broadcast emit from admin to new user joined
     // socket.broadcast.emit('newMessage', generateMessage('Server', 'New user joined', 'red', 'bold')) // this for broadcast to all room
 
-    // for send to all room
-    // socket.on('createMessage', (message, callback) => {
-    //   console.log(`createMessage: ${JSON.stringify(message)}`)
-    //   io.emit('newMessage', generateMessage(message.from, message.text))
-    //   callback()
-    // })
+    
 
     socket.on('location', (coords) => {
-      io.emit('sendLocation', generateMessageLocation('User', coords))
+      var user = users.getUser(socket.id)
+      if (user) {
+        io.to(user.room).emit('sendLocation', generateMessageLocation(user.name, coords))
+      }
     })
 
     socket.on('disconnect', () => {

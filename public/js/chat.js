@@ -58,7 +58,6 @@ var socket = io();
     })
 
     socket.on('newMessage', (message) => {
-      if (message.text) {  
         var template = jQuery('#message-template').html()
         var html = Mustache.render(template, {
           from: message.from,
@@ -69,24 +68,25 @@ var socket = io();
         })
         jQuery('#messages').append(html)
         scrollToBottom()  
-      } else {
-        var sendButton = jQuery('[name=sendButton]')
-        var messageBox = jQuery('[name=message]')
-        var locationButton = jQuery('#send-location')
-        messageBox.attr('disabled', 'disabled')
-        sendButton.attr('disabled', 'disabled').text('Cant send')
-        locationButton.attr('disabled', 'disabled')
-        var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
-        li.text('Message cant be empty !!!, wait 10 second for sending new message')
-        jQuery('#messages').append(li)
-        setTimeout( () => {
-          sendButton.removeAttr('disabled').text('Send')
-          messageBox.removeAttr('disabled')
-          locationButton.removeAttr('disabled')              
-        }, 10000)
-        scrollToBottom()
-      }
-    })
+      }) 
+        
+      socket.on('punishment', () => {
+          var sendButton = jQuery('[name=sendButton]')
+          var messageBox = jQuery('[name=message]')
+          var locationButton = jQuery('#send-location')
+          messageBox.attr('disabled', 'disabled')
+          sendButton.attr('disabled', 'disabled').text('Cant send')
+          locationButton.attr('disabled', 'disabled')
+          var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
+          li.text('Message cant be empty !!!, wait 10 second for sending new message')
+          jQuery('#messages').append(li)
+          setTimeout( () => {
+            sendButton.removeAttr('disabled').text('Send')
+            messageBox.removeAttr('disabled')
+            locationButton.removeAttr('disabled')              
+          }, 10000)
+          scrollToBottom()
+        })
 
     // socket.on('welcome', (message) => {
     //   console.log('ini welcome : ',message)
@@ -115,17 +115,19 @@ var socket = io();
         li.text(`${message.from}: ${message.text}`)
         jQuery('#messages').append(li.append(a))
       } else {
-        var sendButton = jQuery('[name=sendButton]')
-        var messageBox = jQuery('[name=message]')
-        messageBox.attr('disabled', 'disabled')
-        sendButton.attr('disabled', 'disabled').text('Cant send')
-        var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
-        li.text('Message cant be empty !!!, wait 10 second for sending new message')
-        jQuery('#messages').append(li)
-        setTimeout( () => {
-          sendButton.removeAttr('disabled').text('Send')
-          messageBox.removeAttr('disabled')              
-        }, 10000)
+        socket.on('punishment', () => {  
+          var sendButton = jQuery('[name=sendButton]')
+          var messageBox = jQuery('[name=message]')
+          messageBox.attr('disabled', 'disabled')
+          sendButton.attr('disabled', 'disabled').text('Cant send')
+          var li = jQuery(`<li style="color:red;font-weight:bold;"></li>`)
+          li.text('Message cant be empty !!!, wait 10 second for sending new message')
+          jQuery('#messages').append(li)
+          setTimeout( () => {
+            sendButton.removeAttr('disabled').text('Send')
+            messageBox.removeAttr('disabled')              
+          }, 10000)
+        })
       }
 
       // var time = moment.locale('id')(message.createdAt).zone('+07:00').format('h:mm a') 
@@ -141,10 +143,21 @@ var socket = io();
 
     socket.on('sendLocation', (coords) => {
       console.log('location', coords)
-      var link = jQuery(`<a target="_blank" href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}">My Location</a>`)
-      var li = jQuery('<li>',{link},'</li>')
-      li.text(`${coords.from}: `)
-      jQuery('#messages').append(li.append(link))
+      // var link = jQuery(`<a target="_blank" href="http://www.google.com/maps/place/${coords.latitude},${coords.longitude}">My Location</a>`)
+      // var li = jQuery('<li style="font-weight:bold;">',{link},'</li>')
+      // li.text(`${coords.from}: `)
+      // var a = jQuery('<a style="display: flex; justify-content: flex-end; color:grey; font-weight:bold; font-size:13px;"></a>')
+      // a.text(`<server time - ${coords.createdAt}>`)
+      // jQuery('#messages').append(li.append(a).append(link))
+      var template = jQuery('#message-location').html()
+        var html = Mustache.render(template, {
+          from: coords.from, 
+          createdAt: coords.createdAt,
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        })
+        jQuery('#messages').append(html)
+      // jQuery('#messages').append(li.append(link))
       scrollToBottom()
     })
 

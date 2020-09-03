@@ -28,6 +28,20 @@
     </div>
   </div>
 
+  <script id='message-location' type='text/template'>
+    <li class="message">
+      <div class="message__title">
+      <h4 style="color:{{{color}}}">{{from}}</h4>
+        <span>&lt;{{createdAt}}&gt;</span>
+      </div>
+      <div class="message__body">
+        <span>Here is my </span>
+        <a target="_blank" style="font-weight:bold;" href="http://www.google.com/maps/place/{{{latitude}}},{{{longitude}}}">
+          location
+        </a>
+      </div>
+    </li>
+  </script>
   <script id="message-template" type="text/template">
     <li class="message">
       <div class="message__title">
