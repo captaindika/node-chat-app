@@ -8,11 +8,12 @@
   <link rel="shortcut icon" href="./icon/favicon.ico" />
 </head>
 <body class='chat'>
+      <div class='chat__sidebar'>
+        <h3 style="text-align: center; color: #C1F4F3;">Person in Room</h3>
+        <div id ='users'></div>
+      </div>
+        
 
-  <div class='chat__sidebar'>
-    <h3 style="text-align: center; color: #C1F4F3;">Gabut Chat</h3>
-    <div id ='users'></div>
-  </div>
 
   <div class='chat__main'>
     <ul id='messages' class='chat__messages'>
@@ -30,11 +31,11 @@
   <script id="message-template" type="text/template">
     <li class="message">
       <div class="message__title">
-        <h4>{{from}}</h4>
+      <h4 style="color:{{{color}}}">{{from}}</h4>
         <span>&lt;{{createdAt}}&gt;</span>
       </div>
       <div class="message__body">
-        <p style="font-weight:{{{bold}}};color:{{{color}}};">{{text}}</p>
+        <p style="font-weight:{{{bold}}};">{{text}}</p>
       </div>
     </li>
   </script>

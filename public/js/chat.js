@@ -48,6 +48,14 @@ var socket = io();
     // }, (message) => {
     //   console.log('it works, ',message)
     // })
+    socket.on('updateUserList', (users) => {
+      console.log('User List: ', users)
+      var ol = jQuery('<ol></ol>')
+      users.forEach( (user) => {
+        ol.append(jQuery('<li></li>').text(user))
+      })
+      jQuery('#users').html(ol)
+    })
 
     socket.on('newMessage', (message) => {
       if (message.text) {  
@@ -80,23 +88,23 @@ var socket = io();
       }
     })
 
-    socket.on('welcome', (message) => {
-      console.log('ini welcome : ',message)
-      const style = `font-family: Comic Sans MS,
-                    cursive, sans-serif;
-                    font-size: 24px;
-                    letter-spacing: -3px;
-                    word-spacing: 4px; 
-                    color: #5EC9DB;
-                    font-weight: normal;
-                    text-decoration: none;
-                    font-style: italic;
-                    font-variant: small-caps;
-                    text-transform: capitalize;`
-      var title = jQuery(`<li style=\"${style}\"></li>`)
-      title.text(`${message.from} : ${message.text}`)
-      jQuery('#messages').append(title)
-    })
+    // socket.on('welcome', (message) => {
+    //   console.log('ini welcome : ',message)
+    //   const style = `font-family: Comic Sans MS,
+    //                 cursive, sans-serif;
+    //                 font-size: 24px;
+    //                 letter-spacing: -3px;
+    //                 word-spacing: 4px; 
+    //                 color: #5EC9DB;
+    //                 font-weight: normal;
+    //                 text-decoration: none;
+    //                 font-style: italic;
+    //                 font-variant: small-caps;
+    //                 text-transform: capitalize;`
+    //   var title = jQuery(`<li style=\"${style}\"></li>`)
+    //   title.text(`${message.from} : ${message.text}`)
+    //   jQuery('#messages').append(title)
+    // })
     
     socket.on('send', (message) => {
       if (message.text) {
